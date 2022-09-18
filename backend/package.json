@@ -1,0 +1,22 @@
+{
+  "name": "wallet-privato",
+  "version": "1.0.0",
+  "description": "Backend REST API for wallet-privato",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "4.18.1",
+    "pg": "8.7.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.19"
+  },
+  "author": "Marco Todaro",
+  "license": "MIT"
+}

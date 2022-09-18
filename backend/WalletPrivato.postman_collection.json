@@ -1,0 +1,388 @@
+{
+	"info": {
+		"_postman_id": "791b4078-47b8-40e5-af0b-4dcea648e77c",
+		"name": "WalletPrivato",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12782831"
+	},
+	"item": [
+		{
+			"name": "Movimenti",
+			"item": [
+				{
+					"name": "ADD MOVIMENTO (ENTRATA)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"da\":   6,\r\n    \"a\" : 1,\r\n    \"amount\": 1550.3,\r\n    \"tipomovid\": 2,\r\n    \"descrizione\": \"Busta Giugno2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/movimenti",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"movimenti"
+							]
+						},
+						"description": "Crea Movimento"
+					},
+					"response": []
+				},
+				{
+					"name": "GET MOVIMENTI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/movimenti?da=20220101&a=20220901",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"movimenti"
+							],
+							"query": [
+								{
+									"key": "da",
+									"value": "20220101"
+								},
+								{
+									"key": "a",
+									"value": "20220901"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE MOVIMENTO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/movimenti/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"movimenti",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE MOVIMENTO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"da\":   6,\r\n    \"a\" : 1,\r\n    \"amount\": 1550.3,\r\n    \"tipomovid\": 2,\r\n    \"descrizione\": \"Busta Giugno2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/movimenti/13",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"movimenti",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ContiCategorie",
+			"item": [
+				{
+					"name": "CONTI",
+					"item": [
+						{
+							"name": "CONTI",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/conti",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"conti"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "INSERT CONTO",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\":   \"PaypalX\",\r\n    \"colore\" : \"#14aa67\",\r\n    \"icona\": \"paypal\",\r\n    \"iconFamily\": \"FontAwesome\",\r\n    \"amount\": 2999,\r\n    \"descrizione\": \"transazioni rapide\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/conti",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"conti"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE CONTO",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\":   \"PaypalX\",\r\n    \"colore\" : \"#14aa67\",\r\n    \"icona\": \"paypal\",\r\n    \"iconFamily\": \"FontAwesome\",\r\n    \"amount\": 2999,\r\n    \"descrizione\": \"transazioni rapide\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/conti/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"conti",
+										"13"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE CONTO",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/conti/14",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"conti",
+										"14"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CATEGORIE",
+					"item": [
+						{
+							"name": "CATEGORIE USCITE",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/categorie/uscite?anno=2022&mese=08",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"categorie",
+										"uscite"
+									],
+									"query": [
+										{
+											"key": "anno",
+											"value": "2022"
+										},
+										{
+											"key": "mese",
+											"value": "08"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CATEGORIE ENTRATE",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/categorie/entrate?anno=2022&mese=08",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"categorie",
+										"entrate"
+									],
+									"query": [
+										{
+											"key": "anno",
+											"value": "2022"
+										},
+										{
+											"key": "mese",
+											"value": "08"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "INSERT CATEGORIA",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\":   \"Viaggio\",\r\n    \"colore\" : \"#14aa67\",\r\n    \"icona\": \"plane\",\r\n    \"iconFamily\": \"FontAwesome\",\r\n    \"isSpesa\": true,\r\n    \"descrizione\": \"Spese di viaggio\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/categorie",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"categorie"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE CATEGORIA",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/categorie/19",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"categorie",
+										"19"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE CATEGORIA",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\":   \"Viaggio2\",\r\n    \"colore\" : \"#14aa67\",\r\n    \"icona\": \"plane\",\r\n    \"iconFamily\": \"FontAwesome\",\r\n    \"isSpesa\": true,\r\n    \"descrizione\": \"Spese di viaggio\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/conticategorie/categorie/17",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"conticategorie",
+										"categorie",
+										"17"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

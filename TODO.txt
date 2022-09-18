@@ -1,0 +1,6 @@
+categorie CRUD
+movimenti 
+riepilogo
+deploy
+batch movimenti futuri
+auth?

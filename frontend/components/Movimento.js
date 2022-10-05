@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ElementoIcona from "./ElementoIcona";
 import Importo from "./Importo";
 
-const Movimento = ({ item, styles: s }) => {
+const Movimento = ({ item, styles: s, onLongPress, onPress }) => {
   //console.log("item:", item);
   const isTransfer = item.tipo == 3;
   const isSpesa = item.tipo == 1;
@@ -24,7 +24,11 @@ const Movimento = ({ item, styles: s }) => {
   //console.log(from, to);
 
   return (
-    <View style={{ ...s, ...styles.container }}>
+    <TouchableOpacity
+      style={{ ...s, ...styles.container }}
+      onLongPress={() => onLongPress(item)}
+      onPress={() => onPress(item)}
+    >
       <View style={styles.leftContainer}>
         <>
           <ElementoIcona
@@ -65,7 +69,7 @@ const Movimento = ({ item, styles: s }) => {
         color={isTransfer ? "darkgray" : null}
         size={18}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

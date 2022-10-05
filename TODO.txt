@@ -1,6 +1,7 @@
-categorie CRUD
-movimenti 
-riepilogo
+movimenti: UPDATE, DELETE
+riepilogo: READ
+get dati da excel
 deploy
-batch movimenti futuri
+testing
+batch movimenti futuri -> ogni giorno a 00:00 (se c'è un movimento nella tabella dei futuri deve passarlo negli attuali e fare la TRANSAZIONE di INSERIMENTO tra CONTI e CATEGORIE corrispondente)
 auth?

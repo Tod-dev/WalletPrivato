@@ -4,7 +4,7 @@ import { restApiUrl, secondaryColor } from "../config";
 import MyCCPicker from "./MyCCPicker";
 import Calculator from "./Calculator";
 
-const CustomFormMovimento = ({ closeForm }) => {
+const CustomFormMovimento = ({ closeForm, updateStati }) => {
   const [isLoading, setLoading] = useState(true);
   const [cc, setCC] = useState(null);
   const [catEntrate, setCatEntrate] = useState(null);
@@ -13,6 +13,16 @@ const CustomFormMovimento = ({ closeForm }) => {
   const [opType, setOpType] = useState(operationTypes.spesa);
   const [currentIdFrom, setCurrentIdFrom] = useState(null);
   const [currentIdTo, setCurrentIdTo] = useState(null);
+  const [note, setNote] = useState(null);
+  const [val, setVal] = useState(null);
+  const oggi = new Date();
+  const [date, setDate] = useState(oggi);
+  const isOggi =
+    date.getFullYear() == oggi.getFullYear() &&
+    date.getMonth() == oggi.getMonth() &&
+    date.getDate() == oggi.getDate()
+      ? true
+      : false;
 
   const color =
     opType == operationTypes.trasferimento
@@ -27,18 +37,6 @@ const CustomFormMovimento = ({ closeForm }) => {
       : opType == operationTypes.entrata
       ? "Entrata"
       : "Spesa";
-
-  const [note, setNote] = useState(null);
-  const [val, setVal] = useState(0);
-  const oggi = new Date();
-  const [date, setDate] = useState(oggi);
-
-  const isOggi =
-    date.getFullYear() == oggi.getFullYear() &&
-    date.getMonth() == oggi.getMonth() &&
-    date.getDate() == oggi.getDate()
-      ? true
-      : false;
 
   const getCCData = async () => {
     try {
@@ -57,7 +55,7 @@ const CustomFormMovimento = ({ closeForm }) => {
         );
         closeForm();
       }
-      console.log(json);
+      //console.log(json);
       setCC(json.cc);
       setCatEntrate(json.catEntrate);
       setCatSpese(json.catSpese);
@@ -89,6 +87,47 @@ const CustomFormMovimento = ({ closeForm }) => {
         : catSpese[0].id
     );
     setOpType(v);
+  };
+
+  const handleSubmit = async () => {
+    console.log("SUBMIT");
+    const params = {
+      da: currentIdFrom,
+      a: currentIdTo,
+      amount: val,
+      tipomovid: opType,
+      descrizione: note,
+      datamov: date,
+    };
+    console.log(params);
+    const method = "POST";
+    try {
+      const response = await fetch(`${restApiUrl}/movimenti`, {
+        method: method,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+      if (!response.ok) {
+        Alert.alert(
+          "Errore",
+          "Impossibile completare l'operazione sul movimento!",
+          [
+            {
+              text: "ok",
+              style: "cancel",
+            },
+          ]
+        );
+      } else {
+        closeForm();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
   };
 
   if (isLoading) {
@@ -164,6 +203,7 @@ const CustomFormMovimento = ({ closeForm }) => {
         date={date}
         setDate={setDate}
         isOggi={isOggi}
+        submit={handleSubmit}
       />
     </View>
   );

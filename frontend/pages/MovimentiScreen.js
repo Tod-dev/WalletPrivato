@@ -5,7 +5,6 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { mainColor, restApiUrl, secondaryColor } from "../config";
 import Importo from "../components/Importo";
@@ -19,20 +18,17 @@ import GlobalContext from "../context/GlobalContext";
 import MovimentiDayRows from "../components/MovimentiDayRows";
 import CustomFormMovimento from "../components/CustomFormMovimento";
 
-export default function MovimentiScreen() {
+export default function MovimentiScreen({
+  setIsRefreshMov,
+  isRefreshMov,
+  setIsRefreshCat,
+  setIsRefreshCC,
+}) {
   const [isLoading, setLoading] = useState(true);
   const { movimenti, config, annomese } = useContext(GlobalContext);
-  const { configGestureHandler } = config;
   const { data, setData } = movimenti;
-  const {
-    mese,
-    anno,
-    setMese,
-    setAnno,
-    nextAnnoMese,
-    previousAnnoMese,
-    getDateParams,
-  } = annomese;
+  const { mese, anno, nextAnnoMese, previousAnnoMese, getDateParams } =
+    annomese;
   const { da, a } = getDateParams();
   //console.log("annomese:", anno, mese);
 
@@ -62,6 +58,23 @@ export default function MovimentiScreen() {
   useEffect(() => {
     getMovements();
   }, [mese, anno]);
+
+  useEffect(() => {
+    if (isRefreshMov) {
+      getMovements();
+      setIsRefreshMov(false);
+      setIsRefreshCC(true);
+      setIsRefreshCat(true);
+    }
+  }, [isRefreshMov]);
+
+  const handleUpdate = (mov) => {
+    console.log("UPDATE", mov.id);
+  };
+
+  const handleDelete = (mov) => {
+    console.log("DELETE", mov.id);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -114,7 +127,12 @@ export default function MovimentiScreen() {
               data={data.data}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <MovimentiDayRows items={item.data} date={item.id} />
+                <MovimentiDayRows
+                  items={item.data}
+                  date={item.id}
+                  onLongPress={(k) => handleDelete(k)}
+                  onPress={(k) => handleUpdate(k)}
+                />
               )}
             />
           </View>

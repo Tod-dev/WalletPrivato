@@ -8,7 +8,7 @@ import GlobalContext from "../context/GlobalContext";
 import RBSheet from "react-native-raw-bottom-sheet";
 import CustomForm from "../components/CustomFormContiCategorie";
 
-export default function ContiScreen() {
+export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
   const [isLoading, setLoading] = useState(true);
   const { conti } = useContext(GlobalContext);
   const { data, setData, refRBSheet } = conti;
@@ -96,6 +96,13 @@ export default function ContiScreen() {
   useEffect(() => {
     getConti();
   }, []);
+
+  useEffect(() => {
+    if (isRefreshCC) {
+      getConti();
+      setIsRefreshCC(false);
+    }
+  }, [isRefreshCC]);
 
   const closeFormConti = () => {
     //console.log("closerModalCreaConto");

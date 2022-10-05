@@ -12,6 +12,10 @@ import { mainColor, secondaryColor } from "./config";
 import GlobalContext from "./context/GlobalContext";
 
 function MyTabs({ refRBSheetConti, refRBSheetCat }) {
+  const [isRefreshMov, setIsRefreshMov] = useState(false);
+  const [isRefreshCat, setIsRefreshCat] = useState(false);
+  const [isRefreshCC, setIsRefreshCC] = useState(false);
+  const [isRefreshRiepilogo, setIsRefreshRiepilogo] = useState(false);
   return (
     <Tab.Navigator
       initialRouteName="Movimenti"
@@ -49,7 +53,6 @@ function MyTabs({ refRBSheetConti, refRBSheetCat }) {
     >
       <Tab.Screen
         name="Conti"
-        component={ContiScreen}
         options={{
           headerRight: () => (
             <Ionicons
@@ -61,10 +64,16 @@ function MyTabs({ refRBSheetConti, refRBSheetCat }) {
             />
           ),
         }}
-      />
+      >
+        {() => (
+          <ContiScreen
+            isRefreshCC={isRefreshCC}
+            setIsRefreshCC={setIsRefreshCC}
+          />
+        )}
+      </Tab.Screen>
       <Tab.Screen
         name="Categorie"
-        component={CategorieScreen}
         options={{
           headerRight: () => (
             <Ionicons
@@ -76,9 +85,32 @@ function MyTabs({ refRBSheetConti, refRBSheetCat }) {
             />
           ),
         }}
-      />
-      <Tab.Screen name="Movimenti" component={MovimentiScreen} />
-      <Tab.Screen name="Riepilogo" component={RiepilogoScreen} />
+      >
+        {() => (
+          <CategorieScreen
+            isRefreshCat={isRefreshCat}
+            setIsRefreshCat={setIsRefreshCat}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="Movimenti">
+        {() => (
+          <MovimentiScreen
+            setIsRefreshMov={setIsRefreshMov}
+            isRefreshMov={isRefreshMov}
+            setIsRefreshCat={setIsRefreshCat}
+            setIsRefreshCC={setIsRefreshCC}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="Riepilogo">
+        {() => (
+          <RiepilogoScreen
+            isRefreshRiepilogo={isRefreshRiepilogo}
+            setIsRefreshRiepilogo={setIsRefreshRiepilogo}
+          />
+        )}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }

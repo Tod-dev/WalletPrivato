@@ -4,7 +4,7 @@ import { secondaryColor } from "../config";
 import { parseDateyyyymmdd, getTranslateMonth } from "../utils/generic";
 import Movimento from "./Movimento";
 
-const MovimentiDayRows = ({ items, date }) => {
+const MovimentiDayRows = ({ items, date, onLongPress, onPress }) => {
   //console.log("items:", items);
 
   const dd = parseDateyyyymmdd(date);
@@ -44,7 +44,12 @@ const MovimentiDayRows = ({ items, date }) => {
           data={items}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Movimento styles={styles.row} item={item} />
+            <Movimento
+              styles={styles.row}
+              item={item}
+              onLongPress={onLongPress}
+              onPress={onPress}
+            />
           )}
         />
       </View>

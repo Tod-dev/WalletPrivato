@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function RiepilogoScreen() {
+export default function RiepilogoScreen({
+  isRefreshRiepilogo,
+  setIsRefreshRiepilogo,
+}) {
   return (
     <View style={styles.container}>
       <Text>RiepilogoScreen</Text>

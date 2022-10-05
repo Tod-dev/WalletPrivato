@@ -19,7 +19,7 @@ import CustomForm from "../components/CustomFormContiCategorie";
 
 import { getTranslateMonth as getTranslate } from "../utils/generic";
 
-export default function CategorieScreen() {
+export default function CategorieScreen({ isRefreshCat, setIsRefreshCat }) {
   const [isLoading, setLoading] = useState(true);
   const [isSpese, setIsSpese] = useState(false);
   const { categorie, config, annomese } = useContext(GlobalContext);
@@ -118,6 +118,13 @@ export default function CategorieScreen() {
   useEffect(() => {
     getCategories();
   }, [isSpese, mese, anno]);
+
+  useEffect(() => {
+    if (isRefreshCat) {
+      getCategories();
+      setIsRefreshCat(false);
+    }
+  }, [isRefreshCat]);
 
   const dettaglioCategoria = (cat) => {
     //console.log(cat);

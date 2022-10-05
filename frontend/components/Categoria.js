@@ -28,7 +28,9 @@ export default Categoria = (props) => {
         width={58}
         height={50}
       />
-      {sum && <Importo amount={sum} isAbs={true} color="black" size={15} />}
+      {!isNaN(sum) && (
+        <Importo amount={sum} isAbs={true} color="black" size={15} />
+      )}
     </TouchableOpacity>
   );
 };

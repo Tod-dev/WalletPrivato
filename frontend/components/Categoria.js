@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderColor: "black",
     width: 120,
-    height: 90,
+    height: 100,
     flexWrap: "nowrap",
   },
 });

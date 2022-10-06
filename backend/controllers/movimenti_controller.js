@@ -11,7 +11,7 @@ exports.getMovimenti = async (req, res) => {
     const { rows } = await db.query(
       `select Movimenti.id,TipologieMovimenti.id as tipo, TipologieMovimenti.nome as tipoDSC, fromCC.nome, toCC.nome, Movimenti.amount,  to_char(Movimenti.dataMov, 'YYYYMMDD') as dataMov,
       fromCC.colore as coloreFrom, fromCC.nome as nomeFrom, fromCC.icona as iconaFrom, fromCC.iconfamily as iconafamilyFrom,
-      toCC.colore as coloreTo, toCC.nome as nomeTo, toCC.icona as iconaTo, toCC.iconfamily as iconfamilyTo
+      toCC.colore as coloreTo, toCC.nome as nomeTo, toCC.icona as iconaTo, toCC.iconfamily as iconfamilyTo, toCC.id as idTo, fromCC.id as idFrom, Movimenti.descrizione
       from Movimenti
       join TipologieMovimenti on (Movimenti.tipoMovID = TipologieMovimenti.id)
       join ContiCategorie as fromCC on (Movimenti.da = fromCC.id)
@@ -166,7 +166,7 @@ exports.creaMovimento = async (req, res) => {
       descrizione,
       datamov
     );
-
+    console.log("datamov:", datamov);
     const arrayTextParams = addMovimentoTransactionQuery(movimento);
     //console.log(arrayTextParams);
     await db.queryTransaction(arrayTextParams);
@@ -264,20 +264,34 @@ exports.deleteMovimento = async (id) => {
   }
 };
 
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("");
+}
+
 const addMovimentoTransactionQuery = (movimento) => {
   let arrayTextParams = [];
   //console.log("movimento:", movimento);
+  const oggi = new Date();
   if (!movimento.id) {
     arrayTextParams.push(
       new Query(
         `insert into Movimenti (id,da,a,amount,tipoMovID,descrizione,dataMov) 
-  VALUES (nextval('serialMovimenti'), $1, $2, $3, $4, $5, now())`,
+  VALUES (nextval('serialMovimenti'), $1, $2, $3, $4, $5, $6)`,
         [
           movimento.da,
           movimento.a,
           movimento.amount,
           movimento.tipomovid,
           movimento.descrizione,
+          movimento.datamov ? movimento.datamov : formatDate(oggi),
         ]
       )
     );
@@ -285,7 +299,7 @@ const addMovimentoTransactionQuery = (movimento) => {
     arrayTextParams.push(
       new Query(
         `insert into Movimenti (id,da,a,amount,tipoMovID,descrizione,dataMov) 
-  VALUES ($6, $1, $2, $3, $4, $5, now())`,
+  VALUES ($6, $1, $2, $3, $4, $5, $7)`,
         [
           movimento.da,
           movimento.a,
@@ -293,6 +307,7 @@ const addMovimentoTransactionQuery = (movimento) => {
           movimento.tipomovid,
           movimento.descrizione,
           movimento.id,
+          movimento.datamov ? movimento.datamov : formatDate(oggi),
         ]
       )
     );

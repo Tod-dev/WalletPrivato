@@ -3,20 +3,31 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { restApiUrl, secondaryColor } from "../config";
 import MyCCPicker from "./MyCCPicker";
 import Calculator from "./Calculator";
+import { parseDateyyyymmdd, formatDate } from "../utils/generic";
 
-const CustomFormMovimento = ({ closeForm, updateStati }) => {
+const CustomFormMovimento = ({ closeForm, setIsRefreshMov, movimento }) => {
+  //TODO: movimento da update
+  // if (movimento) mode = "UPDATE"; else mode = "INSERT";
   const [isLoading, setLoading] = useState(true);
   const [cc, setCC] = useState(null);
   const [catEntrate, setCatEntrate] = useState(null);
   const [catSpese, setCatSpese] = useState(null);
   const operationTypes = { spesa: 1, entrata: 2, trasferimento: 3 };
-  const [opType, setOpType] = useState(operationTypes.spesa);
-  const [currentIdFrom, setCurrentIdFrom] = useState(null);
-  const [currentIdTo, setCurrentIdTo] = useState(null);
-  const [note, setNote] = useState(null);
-  const [val, setVal] = useState(null);
+  const [opType, setOpType] = useState(
+    movimento ? movimento.tipo : operationTypes.spesa
+  );
+  const [currentIdFrom, setCurrentIdFrom] = useState(
+    movimento ? movimento.idfrom : null
+  );
+  const [currentIdTo, setCurrentIdTo] = useState(
+    movimento ? movimento.idto : null
+  );
+  const [note, setNote] = useState(movimento ? movimento.descrizione : null);
+  const [val, setVal] = useState(movimento ? movimento.amount : null);
   const oggi = new Date();
-  const [date, setDate] = useState(oggi);
+  const [date, setDate] = useState(
+    movimento ? parseDateyyyymmdd(movimento.datamov).dd : oggi
+  );
   const isOggi =
     date.getFullYear() == oggi.getFullYear() &&
     date.getMonth() == oggi.getMonth() &&
@@ -56,17 +67,20 @@ const CustomFormMovimento = ({ closeForm, updateStati }) => {
         closeForm();
       }
       //console.log(json);
+
       setCC(json.cc);
       setCatEntrate(json.catEntrate);
       setCatSpese(json.catSpese);
-      setCurrentIdFrom(json.cc[0].id);
-      setCurrentIdTo(
-        opType == operationTypes.trasferimento
-          ? json.cc[1].id
-          : opType == operationTypes.entrata
-          ? json.catEntrate[0].id
-          : json.catSpese[0].id
-      );
+      if (!movimento) {
+        setCurrentIdFrom(json.cc[0].id);
+        setCurrentIdTo(
+          opType == operationTypes.trasferimento
+            ? json.cc[1].id
+            : opType == operationTypes.entrata
+            ? json.catEntrate[0].id
+            : json.catSpese[0].id
+        );
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -97,19 +111,22 @@ const CustomFormMovimento = ({ closeForm, updateStati }) => {
       amount: val,
       tipomovid: opType,
       descrizione: note,
-      datamov: date,
+      datamov: formatDate(date),
     };
-    console.log(params);
+    //console.log(params);
     const method = "POST";
     try {
-      const response = await fetch(`${restApiUrl}/movimenti`, {
-        method: method,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
+      const response = await fetch(
+        `${restApiUrl}/movimenti${movimento ? "/" + movimento.id : ""}`,
+        {
+          method: method,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(params),
+        }
+      );
       if (!response.ok) {
         Alert.alert(
           "Errore",
@@ -127,6 +144,7 @@ const CustomFormMovimento = ({ closeForm, updateStati }) => {
     } catch (error) {
       console.error(error);
     } finally {
+      setIsRefreshMov(true);
     }
   };
 

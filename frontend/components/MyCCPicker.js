@@ -16,7 +16,7 @@ const MyCCPicker = (props) => {
   const [isModalVisible, setModalVisible] = useState(false);
   //console.log("picker props: ", props);
   const { isConto, isFrom, arrayPicker, currentId, setCurrentId } = props;
-  console.log(arrayPicker, currentId);
+  //console.log(arrayPicker, currentId);
   const {
     id,
     nome,

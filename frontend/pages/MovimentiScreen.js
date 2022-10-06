@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { mainColor, restApiUrl, secondaryColor } from "../config";
 import Importo from "../components/Importo";
@@ -30,6 +31,7 @@ export default function MovimentiScreen({
   const { mese, anno, nextAnnoMese, previousAnnoMese, getDateParams } =
     annomese;
   const { da, a } = getDateParams();
+  const [movimento, setMovimento] = useState(null);
   //console.log("annomese:", anno, mese);
 
   //MODAL
@@ -39,14 +41,15 @@ export default function MovimentiScreen({
     try {
       const response = await fetch(`${restApiUrl}/movimenti?da=${da}&a=${a}`);
       const json = await response.json();
-      //console.log("JSON", json);
+      console.log("JSON", json);
       //setData(json);
       //console.log(json);
       const dates = [];
       Object.keys(json.data).map(function (date) {
-        dates.push(json.data[date]);
+        dates.unshift(json.data[date]);
       });
       json.data = dates;
+
       setData(json);
     } catch (error) {
       console.error(error);
@@ -54,6 +57,11 @@ export default function MovimentiScreen({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("movimento", movimento);
+    if (movimento) refRBSheet.current.open();
+  }, [movimento]);
 
   useEffect(() => {
     getMovements();
@@ -69,11 +77,49 @@ export default function MovimentiScreen({
   }, [isRefreshMov]);
 
   const handleUpdate = (mov) => {
-    console.log("UPDATE", mov.id);
+    //console.log("UPDATE", mov.id);
+    setMovimento(mov);
   };
 
-  const handleDelete = (mov) => {
+  const handleDelete = async (mov) => {
     console.log("DELETE", mov.id);
+
+    Alert.alert("Attenzione", "Sei sicuro di voler eliminare il movimento!", [
+      {
+        text: "Annulla",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => {
+          const method = "DELETE";
+          try {
+            const response = await fetch(`${restApiUrl}/movimenti/${mov.id}`, {
+              method: method,
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({}),
+            });
+            if (!response.ok) {
+              Alert.alert("Errore", "Impossibile eliminare il movimento!", [
+                {
+                  text: "ok",
+                  style: "cancel",
+                },
+              ]);
+            } else {
+              setIsRefreshMov(true);
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+          }
+        },
+      },
+    ]);
   };
 
   if (isLoading) {
@@ -166,6 +212,7 @@ export default function MovimentiScreen({
         height={600}
         openDuration={400}
         closeOnPressMask={true}
+        onClose={() => setMovimento(null)}
         customStyles={{
           container: {
             justifyContent: "center",
@@ -177,6 +224,8 @@ export default function MovimentiScreen({
           closeForm={() => {
             refRBSheet.current.close();
           }}
+          movimento={movimento}
+          setIsRefreshMov={setIsRefreshMov}
         />
       </RBSheet>
     </View>

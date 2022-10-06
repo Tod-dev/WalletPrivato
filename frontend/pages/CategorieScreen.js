@@ -21,7 +21,7 @@ import { getTranslateMonth as getTranslate } from "../utils/generic";
 
 export default function CategorieScreen({ isRefreshCat, setIsRefreshCat }) {
   const [isLoading, setLoading] = useState(true);
-  const [isSpese, setIsSpese] = useState(false);
+  const [isSpese, setIsSpese] = useState(true);
   const { categorie, config, annomese } = useContext(GlobalContext);
   const { configGestureHandler } = config;
   //console.log(categorie);

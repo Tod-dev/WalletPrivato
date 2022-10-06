@@ -308,11 +308,14 @@ const addMovimentoTransactionQuery = (movimento) => {
     );
   }
   if (movimento.tipomovid != 1) {
-    //TRANSFER o ENTRATA -> AGGIUNGO AL CONTO A
+    //ENTRATA -> AGGIUNGO AL CONTO DA
+    //TRANSFER -> AGGIUNGO AL CONTO A
+    const idCC = movimento.tipomovid == 2 ? movimento.da : movimento.a;
+
     arrayTextParams.push(
       new Query(
         `update ContiCategorie set amount = amount + $1 where id = $2`,
-        [movimento.amount, movimento.a]
+        [movimento.amount, idCC]
       )
     );
   }
@@ -338,11 +341,13 @@ const undoMovimentoTransactionQuery = (movimento) => {
     );
   }
   if (movimento.tipomovid != 1) {
-    //UNDO TRANSFER o ENTRATA -> TOLGO DAL CONTO A
+    // UNDO ENTRATA -> TOLGO AL CONTO DA
+    //UNDO TRANSFER -> TOLGO AL CONTO A
+    const idCC = movimento.tipomovid == 2 ? movimento.da : movimento.a;
     arrayTextParams.push(
       new Query(
         `update ContiCategorie set amount = amount - $1 where id = $2`,
-        [movimento.amount, movimento.a]
+        [movimento.amount, idCC]
       )
     );
   }

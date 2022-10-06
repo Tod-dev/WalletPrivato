@@ -66,7 +66,7 @@ exports.getCat = async (req, res, tipo) => {
     join TipologieContiCategorie on
       (ContiCategorie.tipoContoID = TipologieContiCategorie.id)
     left join movimenti on (
-      movimenti.da = ContiCategorie.id
+      movimenti.a = ContiCategorie.id
       and movimenti.tipomovid = $4
       and extract(MONTH FROM movimenti.dataMov)= $2
       and extract(year FROM movimenti.dataMov) = $1
@@ -93,7 +93,7 @@ exports.getCat = async (req, res, tipo) => {
         (ContiCategorie.tipoContoID = TipologieContiCategorie.id)
       left join movimenti on
         (
-      movimenti.da = ContiCategorie.id
+      movimenti.a = ContiCategorie.id
           and movimenti.tipomovid = 2
           and extract(month
         from
@@ -114,7 +114,7 @@ exports.getCat = async (req, res, tipo) => {
         (ContiCategorie.tipoContoID = TipologieContiCategorie.id)
       left join movimenti on
         (
-      movimenti.da = ContiCategorie.id
+      movimenti.a = ContiCategorie.id
           and movimenti.tipomovid = 1
           and extract(month
         from

@@ -15,12 +15,19 @@
     "updates": {
       "fallbackToCacheTimeout": 3000
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.toddev.walletprivato"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a7b686cc-4e0e-4dc3-823a-bc5643993557"
+      }
     }
   }
 }

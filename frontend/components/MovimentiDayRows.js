@@ -20,6 +20,8 @@ const MovimentiDayRows = ({ items, date, onLongPress, onPress }) => {
     }
   }
 
+  items.sort((a, b) => a.id < b.id);
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>

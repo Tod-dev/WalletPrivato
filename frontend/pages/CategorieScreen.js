@@ -207,7 +207,7 @@ export default function CategorieScreen({ isRefreshCat, setIsRefreshCat }) {
               <Categoria categoria={item} handleTouch={dettaglioCategoria} />
             )}
             showsHorizontalScrollIndicator={false}
-            numColumns={2}
+            numColumns={3}
           />
         </ScrollView>
       </GestureRecognizer>

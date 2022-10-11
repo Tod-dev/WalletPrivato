@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginHorizontal: 20,
+    marginHorizontal: 5,
     paddingBottom: 10,
     paddingHorizontal: 5,
     marginTop: 20,

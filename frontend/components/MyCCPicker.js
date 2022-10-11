@@ -76,7 +76,7 @@ const MyCCPicker = (props) => {
             </ScrollView>
           </View>
         </Modal>
-        <View>
+        <View style={{ maxWidth: "90%" }}>
           <Text style={styles.fromToDescribtion}>
             {isFrom ? "Da" : "A"} {isConto ? "Conto" : "Categoria"}
           </Text>

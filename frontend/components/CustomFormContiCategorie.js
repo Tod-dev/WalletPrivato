@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { mainColor, secondaryColor } from "../config";
+import { icons, mainColor, secondaryColor } from "../config";
 import {
   View,
   StyleSheet,
@@ -120,20 +120,7 @@ export default CustomFormConti = ({
         <IconPicker
           showIconPicker={showIconPicker}
           toggleIconPicker={() => setShowIconPicker(!showIconPicker)}
-          iconDetails={[
-            {
-              family: "AntDesign",
-              icons: ["wifi", "form", "creditcard", "facebook-square"],
-            },
-            {
-              family: "FontAwesome",
-              icons: ["paypal"],
-            },
-            {
-              family: "Entypo",
-              icons: ["spotify"],
-            },
-          ]}
+          iconDetails={icons}
           onSelect={(element) => {
             setShowIconPicker(false);
             setIcon(element);

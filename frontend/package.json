@@ -1,12 +1,13 @@
 {
-  "name": "fe-native",
+  "name": "walletprivato",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build": "expo build"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "6.2.0",
@@ -14,6 +15,7 @@
     "@react-navigation/native": "^6.0.11",
     "expo": "~46.0.7",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.14.6",
     "mathjs": "^11.2.1",
     "react": "18.0.0",
     "react-icons": "^4.4.0",

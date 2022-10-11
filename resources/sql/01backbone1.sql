@@ -16,7 +16,6 @@ Create Table ContiCategorie (
 	CONSTRAINT fk_tipologia foreign key(tipoContoID) references TipologieContiCategorie (id)
 );
 
-/*alter table ContiCategorie add column iconFamily varchar(255);*/
 
 CREATE TABLE TipologieMovimenti (
 	id int primary key not null,
@@ -35,6 +34,9 @@ CREATE TABLE Movimenti (
 	CONSTRAINT fk_a foreign key(a) references ContiCategorie (id),
 	CONSTRAINT fk_tipologia foreign key(tipoMovID) references TipologieMovimenti (id)
 );
+
+CREATE SEQUENCE serialContiCategorie START 8;
+CREATE SEQUENCE serialMovimenti START 4;			
 ----------------------------------------------------------------------------------------
 delete from ContiCategorie;
 delete  from TipologieContiCategorie;
@@ -59,8 +61,7 @@ insert into Movimenti (id,da,a,amount,tipoMovID,descrizione,dataMov) values
 					  (2, 1, 4,22.5,1,'Cena sushi con amici',now()),
 					  (3, 1, 1,50,3,'Transfer momentaneo',now());
 
-CREATE SEQUENCE serialContiCategorie START 8;
-CREATE SEQUENCE serialMovimenti START 4;				
+	
 --SELECT nextval('serialContiCategorie');		
 ----------------------------------------------------------------------------------------------------
 --TODO:

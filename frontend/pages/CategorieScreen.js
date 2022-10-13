@@ -32,6 +32,7 @@ export default function CategorieScreen({ isRefreshCat, setIsRefreshCat }) {
   const [catState, setCatState] = useState({});
 
   const getCategories = async () => {
+    setLoading(true);
     try {
       const speseEntrate = isSpese ? "uscite" : "entrate";
       const response = await fetch(

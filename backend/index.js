@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 //!import routes
 const ruotes_conti_categorie = require("./routes/conti_categorie");
 const ruotes_movs = require("./routes/movimenti");
+const routes_riepilogo = require("./routes/riepilogo");
 const { unknownEndpoint } = require("./routes/default");
 //const movimenti_model = require("./movimenti_model"); //!
 
@@ -22,6 +23,7 @@ app.use(express.json());
 //app.use("/conticategorie", ruotes_conti_categorie);
 app.use("/movimenti", ruotes_movs);
 app.use("/conticategorie", ruotes_conti_categorie);
+app.use("/riepilogo", routes_riepilogo);
 app.use(unknownEndpoint);
 
 //!Server listening

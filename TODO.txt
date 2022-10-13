@@ -1,4 +1,2 @@
 riepilogo: READ
-testing
-auth?
-deploy
+auth backend

@@ -100,6 +100,7 @@ function MyTabs({ refRBSheetConti, refRBSheetCat }) {
             isRefreshMov={isRefreshMov}
             setIsRefreshCat={setIsRefreshCat}
             setIsRefreshCC={setIsRefreshCC}
+            setIsRefreshRiepilogo={setIsRefreshRiepilogo}
           />
         )}
       </Tab.Screen>

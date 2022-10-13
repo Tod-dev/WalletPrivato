@@ -24,6 +24,7 @@ export default function MovimentiScreen({
   isRefreshMov,
   setIsRefreshCat,
   setIsRefreshCC,
+  setIsRefreshRiepilogo,
 }) {
   const [isLoading, setLoading] = useState(true);
   const { movimenti, config, annomese } = useContext(GlobalContext);
@@ -38,6 +39,7 @@ export default function MovimentiScreen({
   const refRBSheet = useRef();
 
   const getMovements = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${restApiUrl}/movimenti?da=${da}&a=${a}`);
       const json = await response.json();
@@ -73,6 +75,7 @@ export default function MovimentiScreen({
       setIsRefreshMov(false);
       setIsRefreshCC(true);
       setIsRefreshCat(true);
+      setIsRefreshRiepilogo(true);
     }
   }, [isRefreshMov]);
 

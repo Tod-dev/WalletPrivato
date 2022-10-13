@@ -383,6 +383,40 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Riepilogo",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/riepilogo?da=20220101&a=20221231",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"riepilogo"
+							],
+							"query": [
+								{
+									"key": "da",
+									"value": "20220101"
+								},
+								{
+									"key": "a",
+									"value": "20221231"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

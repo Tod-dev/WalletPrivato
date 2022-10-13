@@ -30,6 +30,17 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
     }
   };
 
+  useEffect(() => {
+    getConti();
+  }, []);
+
+  useEffect(() => {
+    if (isRefreshCC) {
+      getConti();
+      setIsRefreshCC(false);
+    }
+  }, [isRefreshCC]);
+
   const handleSubmitFormInsertUpdate = async (
     id,
     amount,
@@ -92,17 +103,6 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
       }
     }
   };
-
-  useEffect(() => {
-    getConti();
-  }, []);
-
-  useEffect(() => {
-    if (isRefreshCC) {
-      getConti();
-      setIsRefreshCC(false);
-    }
-  }, [isRefreshCC]);
 
   const closeFormConti = () => {
     //console.log("closerModalCreaConto");

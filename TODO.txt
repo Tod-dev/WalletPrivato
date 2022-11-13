@@ -1,2 +1,4 @@
-riepilogo: READ
+cyclic.io deploy
+db backup periodico
 auth backend
+filtraggio sui movimenti (barra di ricerca)

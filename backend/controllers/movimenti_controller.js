@@ -174,7 +174,7 @@ exports.creaMovimento = async (req, res) => {
     return movimento;
   } catch (error) {
     const errorToThrow = new Error();
-    switch (error?.code) {
+    switch (error.code) {
       case "23505":
         errorToThrow.message = "User already exists";
         errorToThrow.statusCode = 403;

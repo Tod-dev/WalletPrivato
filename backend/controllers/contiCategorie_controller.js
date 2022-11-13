@@ -170,7 +170,7 @@ exports.creaConto = async (req, res) => {
     return cc;
   } catch (error) {
     const errorToThrow = new Error();
-    switch (error?.code) {
+    switch (error.code) {
       case "23505":
         errorToThrow.message = "User already exists";
         errorToThrow.statusCode = 403;
@@ -300,7 +300,7 @@ exports.creaCategoria = async (req, res) => {
     return cc;
   } catch (error) {
     const errorToThrow = new Error();
-    switch (error?.code) {
+    switch (error.code) {
       case "23505":
         errorToThrow.message = "User already exists";
         errorToThrow.statusCode = 403;

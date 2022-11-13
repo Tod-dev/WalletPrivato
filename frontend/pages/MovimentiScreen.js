@@ -29,8 +29,7 @@ export default function MovimentiScreen({
   const [isLoading, setLoading] = useState(true);
   const { movimenti, config, annomese } = useContext(GlobalContext);
   const { data, setData } = movimenti;
-  const { mese, anno, nextAnnoMese, previousAnnoMese, getDateParams } =
-    annomese;
+  const { mese, anno, nextAnnoMese, previousAnnoMese, getDateParams } = annomese;
   const { da, a } = getDateParams();
   const [movimento, setMovimento] = useState(null);
   //console.log("annomese:", anno, mese);

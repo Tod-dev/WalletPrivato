@@ -67,3 +67,5 @@ insert into Movimenti (id,da,a,amount,tipoMovID,descrizione,dataMov) values
 --TODO:
 	--movimenti futuri
 ----------------------------------------------------------------------------------------------------
+
+ALTER TABLE ContiCategorie ADD COLUMN amount_effettivo float(50) null;

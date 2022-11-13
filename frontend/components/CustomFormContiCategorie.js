@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { icons, mainColor, secondaryColor } from "../config";
+import React, { useState } from 'react'
+import { icons, mainColor, secondaryColor } from '../config'
 import {
   View,
   StyleSheet,
@@ -8,17 +8,17 @@ import {
   TextInput,
   SafeAreaView,
   Switch,
-} from "react-native";
-import ColorPicker from "./ColorPicker";
-import IconPicker from "react-native-icon-picker";
-import ElementoIcona from "./ElementoIcona";
+} from 'react-native'
+import ColorPicker from './ColorPicker'
+import IconPicker from 'react-native-icon-picker'
+import ElementoIcona from './ElementoIcona'
 
 const generateRandomColor = () => {
-  let color = "ffffff";
-  while (color === "ffffff")
-    color = Math.floor(Math.random() * 16777215).toString(16);
-  return "#" + color;
-};
+  let color = 'ffffff'
+  while (color === 'ffffff')
+    color = Math.floor(Math.random() * 16777215).toString(16)
+  return '#' + color
+}
 
 export default CustomFormConti = ({
   handleCancelForm,
@@ -36,72 +36,85 @@ export default CustomFormConti = ({
     icona,
     iconfamily,
     spesa,
-  } = initalState;
-  let isInsert;
-  if (operationType === "INSERT") {
+    amount_effettivo: saldo_effettivo,
+  } = initalState
+  let isInsert
+  if (operationType === 'INSERT') {
     //INSERT
-    isInsert = true;
+    isInsert = true
   } else {
     //UPDATE - DELETE - DETAIL
-    isInsert = false;
-    if (!id) handleCancelForm();
+    isInsert = false
+    if (!id) handleCancelForm()
     //console.log(saldo);
   }
   //console.log("OPERATION TYPE:", operationType);
-  const [nome, setNome] = useState(name || "");
-  const [amount, setAmount] = useState(saldo ? saldo.toFixed(2) : 0);
-  const [descrizione, setDescrizione] = useState(descr || "");
-  const [color, setColor] = useState(colore || generateRandomColor());
-  const [showIconPicker, setShowIconPicker] = useState(false);
-  const [isSpesa, setIsSpesa] = useState(spesa);
+  const [nome, setNome] = useState(name || '')
+  const [amount, setAmount] = useState(saldo ? saldo.toFixed(2) : 0)
+  const [amount_effettivo, setAmountEffettivo] = useState(
+    saldo_effettivo ? saldo_effettivo.toFixed(2) : saldo ? saldo.toFixed(2) : 0,
+  )
+  const [descrizione, setDescrizione] = useState(descr || '')
+  const [color, setColor] = useState(colore || generateRandomColor())
+  const [showIconPicker, setShowIconPicker] = useState(false)
+  const [isSpesa, setIsSpesa] = useState(spesa)
 
   const [icon, setIcon] = useState({
-    icon: icona || "creditcard",
-    family: iconfamily || "AntDesign",
-  });
+    icon: icona || 'creditcard',
+    family: iconfamily || 'AntDesign',
+  })
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        justifyContent: "flex-start",
-        alignItems: "center",
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         paddingVertical: 10,
-        width: "100%",
+        width: '100%',
       }}
     >
-      <Text style={{ fontWeight: "bold", fontSize: 40 }}>
-        {isInsert ? "Crea" : "Modifica"} {isCat ? "Categoria" : "Conto"}
+      <Text style={{ fontWeight: 'bold', fontSize: 40 }}>
+        {isInsert ? 'Crea' : 'Modifica'} {isCat ? 'Categoria' : 'Conto'}
       </Text>
       <TextInput
         style={styles.input}
-        placeholder={isCat ? "Nome della categoria" : "Nome del conto"}
+        placeholder={isCat ? 'Nome della categoria' : 'Nome del conto'}
         onChangeText={setNome}
         value={nome}
       ></TextInput>
 
       {!isCat && (
-        <TextInput
-          style={styles.input}
-          onChangeText={setAmount}
-          value={amount}
-          placeholder="Saldo del conto"
-          keyboardType="numeric"
-        />
+        <>
+          <TextInput
+            style={styles.input}
+            onChangeText={setAmount}
+            value={amount}
+            placeholder="Saldo del conto"
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setAmountEffettivo}
+            value={amount_effettivo}
+            placeholder="Saldo del conto effettivo"
+            keyboardType="numeric"
+          />
+        </>
       )}
       {isCat && (
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
             marginTop: 10,
           }}
         >
-          <Text>{isSpesa ? "Spesa" : "Entrata"}</Text>
+          <Text>{isSpesa ? 'Spesa' : 'Entrata'}</Text>
           <Switch
-            trackColor={{ false: "gray", true: "gray" }}
-            thumbColor={isSpesa ? "red" : "green"}
+            trackColor={{ false: 'gray', true: 'gray' }}
+            thumbColor={isSpesa ? 'red' : 'green'}
             onValueChange={() => setIsSpesa((previousState) => !previousState)}
             value={isSpesa}
           />
@@ -122,8 +135,8 @@ export default CustomFormConti = ({
           toggleIconPicker={() => setShowIconPicker(!showIconPicker)}
           iconDetails={icons}
           onSelect={(element) => {
-            setShowIconPicker(false);
-            setIcon(element);
+            setShowIconPicker(false)
+            setIcon(element)
             //console.log(element.icon);
           }}
           content={
@@ -166,7 +179,8 @@ export default CustomFormConti = ({
                 icon,
                 descrizione,
                 false,
-                isSpesa
+                isSpesa,
+                amount_effettivo
               )
             }
           >
@@ -186,14 +200,15 @@ export default CustomFormConti = ({
                   icon,
                   descrizione,
                   false,
-                  isSpesa
+                  isSpesa,
+                  amount_effettivo
                 )
               }
             >
               <Text style={styles.buttonText}>Modifica</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ ...styles.button, backgroundColor: "white" }}
+              style={{ ...styles.button, backgroundColor: 'white' }}
               onPress={() =>
                 handleSubmitForm(
                   id,
@@ -203,11 +218,12 @@ export default CustomFormConti = ({
                   icon,
                   descrizione,
                   true,
-                  isSpesa
+                  isSpesa,
+                  amount_effettivo
                 )
               }
             >
-              <Text style={{ ...styles.buttonText, color: "red" }}>
+              <Text style={{ ...styles.buttonText, color: 'red' }}>
                 Elimina
               </Text>
             </TouchableOpacity>
@@ -215,35 +231,35 @@ export default CustomFormConti = ({
         )}
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   input: {
-    width: "90%",
-    maxWidth: "90%",
+    width: '90%',
+    maxWidth: '90%',
     marginTop: 10,
     borderWidth: 1,
     padding: 10,
     borderRadius: 3,
   },
   iconPickerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 10,
   },
   pickerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 100,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "70%",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '70%',
     marginTop: 20,
   },
   button: {
@@ -251,8 +267,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     height: 30,
     borderRadius: 3,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  buttonText: { color: "white", fontWeight: "bold", textAlign: "center" },
-});
+  buttonText: { color: 'white', fontWeight: 'bold', textAlign: 'center' },
+})

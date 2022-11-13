@@ -20,7 +20,8 @@ exports.getConti = async (req, res) => {
     );
     const { rows: tot } = await db.query(
       `select
-    sum(ContiCategorie.amount) as tot
+    sum(ContiCategorie.amount) as tot,
+    sum(coalesce( ContiCategorie.amount_effettivo,ContiCategorie.amount)) as tot_effettivo
   from
     ContiCategorie
   join TipologieContiCategorie on
@@ -32,6 +33,7 @@ exports.getConti = async (req, res) => {
     //console.log(rows);
     const result = {
       totConti: tot[0].tot,
+      totContiEffettivo: tot[0].tot_effettivo,
       data: rows,
     };
     return result;
@@ -146,7 +148,7 @@ exports.getCat = async (req, res, tipo) => {
 };
 
 exports.creaConto = async (req, res) => {
-  const { nome, colore, icona, iconFamily, amount, descrizione } = req.body;
+  const { nome, colore, icona, iconFamily, amount, descrizione,amount_effettivo } = req.body;
   try {
     console.log(req.body);
     const cc = new ContiCategorie(
@@ -158,13 +160,14 @@ exports.creaConto = async (req, res) => {
       amount,
       3,
       descrizione,
-      "S"
+      "S",
+      amount_effettivo || amount
     );
 
     const { rows } = await db.query(
-      `insert into conticategorie (id,nome,colore,icona,amount,tipoContoID,descrizione,conto,iconFamily) values 
-      (nextval('serialContiCategorie'),$1,$2,$3,$4,3,$5,'S',$6)`,
-      [cc.nome, cc.colore, cc.icona, cc.amount, cc.descrizione, cc.iconFamily]
+      `insert into conticategorie (id,nome,colore,icona,amount,tipoContoID,descrizione,conto,iconFamily,amount_effettivo) values 
+      (nextval('serialContiCategorie'),$1,$2,$3,$4,3,$5,'S',$6, $7)`,
+      [cc.nome, cc.colore, cc.icona, cc.amount, cc.descrizione, cc.iconFamily, cc.amount_effettivo]
     );
 
     return cc;
@@ -204,7 +207,8 @@ exports.deleteConto = async (id) => {
       cc.amount,
       3,
       cc.descrizione,
-      "S"
+      "S",
+      cc.amount_effettivo
     );
 
     await db.query(`delete from conticategorie where id = $1 `, [cc.id]);
@@ -237,7 +241,8 @@ exports.updateConto = async (req, res) => {
       cc.amount,
       3,
       cc.descrizione,
-      "S"
+      "S",
+      cc.amount_effettivo || cc.amount
     );
     console.log("CONTO:", conto);
 
@@ -248,7 +253,8 @@ exports.updateConto = async (req, res) => {
     icona = $4,
     iconFamily = $5,
     amount = $6,
-    descrizione = $7
+    descrizione = $7,
+    amount_effettivo = $8
     where id = $1 `,
       [
         conto.id,
@@ -258,6 +264,7 @@ exports.updateConto = async (req, res) => {
         conto.iconFamily,
         conto.amount,
         conto.descrizione,
+        conto.amount_effettivo
       ]
     );
 

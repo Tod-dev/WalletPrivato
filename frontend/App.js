@@ -1,50 +1,62 @@
-import React, { useRef, useState } from "react";
-import { DarkTheme, NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-const Tab = createBottomTabNavigator();
+import React, { useRef, useState } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Ionicons } from '@expo/vector-icons'
+const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
-import ContiScreen from "./pages/ContiScreen";
-import CategorieScreen from "./pages/CategorieScreen";
-import MovimentiScreen from "./pages/MovimentiScreen";
-import RiepilogoScreen from "./pages/RiepilogoScreen";
-import { mainColor, secondaryColor } from "./config";
-import GlobalContext from "./context/GlobalContext";
+import ContiScreen from './pages/ContiScreen'
+import CategorieScreen from './pages/CategorieScreen'
+import MovimentiScreen from './pages/MovimentiScreen'
+import RiepilogoScreen from './pages/RiepilogoScreen'
+import RiepilogoMeseScreen from './pages/RiepilogoMeseScreen'
+import { mainColor, secondaryColor } from './config'
+import GlobalContext from './context/GlobalContext'
 
 function MyTabs({ refRBSheetConti, refRBSheetCat }) {
-  const [isRefreshMov, setIsRefreshMov] = useState(false);
-  const [isRefreshCat, setIsRefreshCat] = useState(false);
-  const [isRefreshCC, setIsRefreshCC] = useState(false);
-  const [isRefreshRiepilogo, setIsRefreshRiepilogo] = useState(false);
+  const [isRefreshMov, setIsRefreshMov] = useState(false)
+  const [isRefreshCat, setIsRefreshCat] = useState(false)
+  const [isRefreshCC, setIsRefreshCC] = useState(false)
+  const [isRefreshRiepilogo, setIsRefreshRiepilogo] = useState(false)
+
+  const WrapperRiepilogoScreen = ({navigation}) => (
+    <RiepilogoScreen
+      isRefreshRiepilogo={isRefreshRiepilogo}
+      setIsRefreshRiepilogo={setIsRefreshRiepilogo}
+      navigation={navigation}
+    />
+  )
+
   return (
     <Tab.Navigator
       initialRouteName="Movimenti"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          iconName = "add-circle-outline";
+          let iconName
+          iconName = 'add-circle-outline'
 
           switch (route.name) {
-            case "Conti":
-              iconName = "card-outline";
-              break;
-            case "Categorie":
-              iconName = "apps-outline";
-              break;
-            case "Movimenti":
-              iconName = "move-outline";
-              break;
-            case "Riepilogo":
-              iconName = "analytics-outline";
-              break;
+            case 'Conti':
+              iconName = 'card-outline'
+              break
+            case 'Categorie':
+              iconName = 'apps-outline'
+              break
+            case 'Movimenti':
+              iconName = 'move-outline'
+              break
+            case 'Riepilogo':
+              iconName = 'analytics-outline'
+              break
             default:
-              iconName = "add-circle-outline";
+              iconName = 'add-circle-outline'
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={color} />
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: "bold",
+          fontWeight: 'bold',
           marginBottom: 5,
         },
         tabBarActiveTintColor: mainColor,
@@ -104,95 +116,98 @@ function MyTabs({ refRBSheetConti, refRBSheetCat }) {
           />
         )}
       </Tab.Screen>
-      <Tab.Screen name="Riepilogo">
+      <Tab.Screen name="Riepilogo" >
         {() => (
-          <RiepilogoScreen
-            isRefreshRiepilogo={isRefreshRiepilogo}
-            setIsRefreshRiepilogo={setIsRefreshRiepilogo}
-          />
+          <Stack.Navigator initialRouteName="anno">
+            <Stack.Screen
+              name="Anno"
+              component={WrapperRiepilogoScreen}
+            ></Stack.Screen>
+            <Stack.Screen name="Mese" component={RiepilogoMeseScreen} />
+          </Stack.Navigator>
         )}
       </Tab.Screen>
     </Tab.Navigator>
-  );
+  )
 }
 
 export default function App() {
-  const [contiData, setContiData] = useState([]);
-  const [catData, setCatData] = useState([]);
-  const [movData, setMovData] = useState([]);
-  const refRBSheetConti = useRef();
-  const refRBSheetCat = useRef();
-  const [anno, setAnno] = useState(new Date().getFullYear());
-  const [mese, setMese] = useState(new Date().getMonth() + 1);
+  const [contiData, setContiData] = useState([])
+  const [catData, setCatData] = useState([])
+  const [movData, setMovData] = useState([])
+  const refRBSheetConti = useRef()
+  const refRBSheetCat = useRef()
+  const [anno, setAnno] = useState(new Date().getFullYear())
+  const [mese, setMese] = useState(new Date().getMonth() + 1)
   const DateFiltersValues = {
-    ANNOMESE: "ANNOMESE",
-    ANNO: "ANNO",
-  };
+    ANNOMESE: 'ANNOMESE',
+    ANNO: 'ANNO',
+  }
   const [dateFiltersType, setDateFiltersType] = useState(
-    DateFiltersValues.ANNOMESE
-  );
+    DateFiltersValues.ANNOMESE,
+  )
 
   const previousAnnoMese = (s) => {
     //console.log("previous annomese");
     if (dateFiltersType === DateFiltersValues.ANNOMESE) {
       if (mese == 1) {
-        setMese(12);
-        setAnno(anno - 1);
-        return;
+        setMese(12)
+        setAnno(anno - 1)
+        return
       }
-      setMese(mese - 1);
+      setMese(mese - 1)
     } else if (dateFiltersType === DateFiltersValues.ANNO) {
-      setAnno(anno - 1);
+      setAnno(anno - 1)
     }
-  };
+  }
 
   const nextAnnoMese = (s) => {
     //console.log("next annomese");
     if (dateFiltersType === DateFiltersValues.ANNOMESE) {
       if (mese == 12) {
-        setMese(1);
-        setAnno(anno + 1);
-        return;
+        setMese(1)
+        setAnno(anno + 1)
+        return
       }
-      setMese(mese + 1);
+      setMese(mese + 1)
     } else if (dateFiltersType === DateFiltersValues.ANNO) {
-      setAnno(anno + 1);
+      setAnno(anno + 1)
     }
-  };
+  }
 
   Date.prototype.yyyymmdd = function () {
-    var mm = this.getMonth() + 1; // getMonth() is zero-based
-    var dd = this.getDate();
+    var mm = this.getMonth() + 1 // getMonth() is zero-based
+    var dd = this.getDate()
 
     return [
       this.getFullYear(),
-      (mm > 9 ? "" : "0") + mm,
-      (dd > 9 ? "" : "0") + dd,
-    ].join("");
-  };
+      (mm > 9 ? '' : '0') + mm,
+      (dd > 9 ? '' : '0') + dd,
+    ].join('')
+  }
 
   const getDateParams = () => {
-    let da, a;
+    let da, a
     if (dateFiltersType === DateFiltersValues.ANNOMESE) {
-      da = new Date(anno, mese - 1, 1);
-      a = new Date(anno, mese, 0);
+      da = new Date(anno, mese - 1, 1)
+      a = new Date(anno, mese, 0)
     } else if (dateFiltersType === DateFiltersValues.ANNO) {
-      da = new Date(anno, 0, 1);
-      a = new Date(anno, 11, 0);
+      da = new Date(anno, 0, 1)
+      a = new Date(anno, 11, 0)
     } else {
-      da = null;
-      a = null;
+      da = null
+      a = null
     }
     return {
       da: da.yyyymmdd(),
       a: a.yyyymmdd(),
-    };
-  };
+    }
+  }
 
   const configGestureHandler = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80,
-  };
+  }
 
   const globalState = {
     conti: {
@@ -221,7 +236,7 @@ export default function App() {
     config: {
       configGestureHandler: configGestureHandler,
     },
-  };
+  }
 
   return (
     <GlobalContext.Provider value={globalState}>
@@ -232,5 +247,5 @@ export default function App() {
         />
       </NavigationContainer>
     </GlobalContext.Provider>
-  );
+  )
 }

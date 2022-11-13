@@ -1,45 +1,48 @@
-import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, FlatList, Alert } from "react-native";
-import Conto from "../components/Conto";
-import Importo from "../components/Importo";
-import Loading from "../components/Loading";
-import { restApiUrl } from "../config";
-import GlobalContext from "../context/GlobalContext";
-import RBSheet from "react-native-raw-bottom-sheet";
-import CustomForm from "../components/CustomFormContiCategorie";
+import React, { useState, useEffect, useContext } from 'react'
+import { StyleSheet, View, FlatList, Alert } from 'react-native'
+import Conto from '../components/Conto'
+import Importo from '../components/Importo'
+import Loading from '../components/Loading'
+import { restApiUrl } from '../config'
+import GlobalContext from '../context/GlobalContext'
+import RBSheet from 'react-native-raw-bottom-sheet'
+import CustomForm from '../components/CustomFormContiCategorie'
 
 export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
-  const [isLoading, setLoading] = useState(true);
-  const { conti } = useContext(GlobalContext);
-  const { data, setData, refRBSheet } = conti;
-  const [tot, setTot] = useState(0);
-  const [operationType, setOperationType] = useState("INSERT");
-  const [contoState, setContoState] = useState({});
+  const [isLoading, setLoading] = useState(true)
+  const { conti } = useContext(GlobalContext)
+  const { data, setData, refRBSheet } = conti
+  const [tot, setTot] = useState({ totConti: 0, totContiEffettivo: 0 })
+  const [operationType, setOperationType] = useState('INSERT')
+  const [contoState, setContoState] = useState({})
 
   const getConti = async () => {
     try {
-      setLoading(true);
-      const response = await fetch(`${restApiUrl}/conticategorie/conti`);
-      const json = await response.json();
-      setData(json.data);
-      setTot(json.totConti);
+      setLoading(true)
+      const response = await fetch(`${restApiUrl}/conticategorie/conti`)
+      const json = await response.json()
+      setData(json.data)
+      setTot({
+        totConti: json.totConti,
+        totContiEffettivo: json.totContiEffettivo,
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getConti();
-  }, []);
+    getConti()
+  }, [])
 
   useEffect(() => {
     if (isRefreshCC) {
-      getConti();
-      setIsRefreshCC(false);
+      getConti()
+      setIsRefreshCC(false)
     }
-  }, [isRefreshCC]);
+  }, [isRefreshCC])
 
   const handleSubmitFormInsertUpdate = async (
     id,
@@ -48,24 +51,26 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
     color,
     icon,
     descrizione,
-    isDelete
+    isDelete,
+    isSpesa,
+    amount_effettivo,
   ) => {
-    const method = isDelete ? "DELETE" : "POST";
-    let err = false;
-    if (!amount || !nome || isNaN(amount)) err = true;
+    const method = isDelete ? 'DELETE' : 'POST'
+    let err = false
+    if (!amount || !nome || isNaN(amount)) err = true
     //console.log({ id, amount, nome, color, icon, descrizione, isDelete, err });
     if (err) {
-      Alert.alert("Conto non valido", "Inserire un nome e un saldo valido", [
+      Alert.alert('Conto non valido', 'Inserire un nome e un saldo valido', [
         {
-          text: "ok",
-          style: "cancel",
+          text: 'ok',
+          style: 'cancel',
         },
-      ]);
+      ])
     } else {
       //console.warn("IN");
-      let updateDelete = "";
-      if (operationType !== "INSERT") {
-        updateDelete = "/" + id;
+      let updateDelete = ''
+      if (operationType !== 'INSERT') {
+        updateDelete = '/' + id
       }
       try {
         const response = await fetch(
@@ -73,8 +78,8 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
           {
             method: method,
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               nome: nome,
@@ -83,50 +88,69 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
               iconFamily: icon.family,
               amount: amount,
               descrizione: descrizione,
+              amount_effettivo: amount_effettivo,
             }),
-          }
-        );
+          },
+        )
         if (!response.ok) {
-          Alert.alert("Conto non valido", "Errore nell'operazione sul conto", [
+          Alert.alert('Conto non valido', "Errore nell'operazione sul conto", [
             {
-              text: "ok",
-              style: "cancel",
+              text: 'ok',
+              style: 'cancel',
             },
-          ]);
+          ])
         } else {
-          getConti();
-          closeFormConti();
+          getConti()
+          closeFormConti()
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       } finally {
       }
     }
-  };
+  }
 
   const closeFormConti = () => {
     //console.log("closerModalCreaConto");
-    setOperationType("INSERT");
-    setContoState({});
-    if (refRBSheet.current) refRBSheet.current.close();
-  };
+    setOperationType('INSERT')
+    setContoState({})
+    if (refRBSheet.current) refRBSheet.current.close()
+  }
 
   const dettaglioConto = (conto) => {
     //console.log(conto);
-    setOperationType("UPDATE");
-    setContoState(conto);
-    if (refRBSheet.current) refRBSheet.current.open();
-  };
+    setOperationType('UPDATE')
+    setContoState(conto)
+    if (refRBSheet.current) refRBSheet.current.open()
+  }
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
     <View style={styles.container}>
-      <Importo size={40} amount={tot} />
+      <Importo size={40} amount={tot.totConti} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '60%',
+        }}
+      >
+        <Importo
+          size={20}
+          amount={tot.totContiEffettivo}
+          color={tot.totContiEffettivo >= tot.totConti ? 'green' : 'red'}
+        />
+
+        <Importo
+          size={20}
+          amount={tot.totContiEffettivo - tot.totConti}
+        />
+      </View>
       <FlatList
-        style={{ width: "100%", marginVertical: 20 }}
+        style={{ width: '100%', marginVertical: 20 }}
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -140,8 +164,8 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
         closeOnPressMask={false}
         customStyles={{
           container: {
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           },
         }}
       >
@@ -154,16 +178,16 @@ export default function ContiScreen({ isRefreshCC, setIsRefreshCC }) {
         />
       </RBSheet>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     paddingVertical: 10,
-    width: "100%",
+    width: '100%',
   },
-});
+})

@@ -8,13 +8,14 @@ const currencyFormat = (num) => {
 
 exports.currencyFormat = currencyFormat;
 
-export default Importo = ({
+export default  Importo = ({
   size,
   amount,
   color,
   isAbs,
   isNotEuroSign,
   isString,
+  forceSing
 }) => {
   if ((!amount || isNaN(amount) || amount.length == 0) && !isString) amount = 0;
   //console.log("AMOUNT:", amount);
@@ -28,7 +29,8 @@ export default Importo = ({
         color: color ? color : amount < 0 ? "red" : "green",
       }}
     >
-      {isString ? amount : currencyFormat(amount)} {isNotEuroSign ? "" : "€"}
+      {forceSing && amount>0 ? '+' : ''} {isString ? amount : currencyFormat(amount)} {isNotEuroSign ? "" : "€"}
+      
     </Text>
   );
 };

@@ -56,7 +56,8 @@ export default function CategorieScreen({ isRefreshCat, setIsRefreshCat }) {
     icon,
     descrizione,
     isDelete,
-    isSpesa
+    isSpesa,
+    amount_effettivo
   ) => {
     const method = isDelete ? "DELETE" : "POST";
     let err = false;

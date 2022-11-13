@@ -8,7 +8,8 @@ function ContiCategorie(
   amount,
   tipocontoid,
   descrizione,
-  conto
+  conto,
+  amount_effettivo
 ) {
   this.id = id;
   this.nome = nome;
@@ -19,6 +20,7 @@ function ContiCategorie(
   this.tipocontoid = tipocontoid;
   this.descrizione = descrizione;
   this.conto = conto;
+  this.amount_effettivo = amount_effettivo;
 }
 
 module.exports = ContiCategorie;
